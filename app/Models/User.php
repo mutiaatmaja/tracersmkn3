@@ -4,18 +4,25 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Contracts\LaratrustUser;
 use Laratrust\Traits\HasRolesAndPermissions;
 
+/**
+ * Model untuk User / Pengguna Aplikasi
+ *
+ * Mencakup Admin, Guru, Staff, Kepala Sekolah, dan Alumni
+ * User untuk autentikasi, sedangkan data spesifik alumni ada di tabel alumni terpisah
+ */
 class User extends Authenticatable implements LaratrustUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRolesAndPermissions;
+    use HasFactory, HasRolesAndPermissions, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal (mass assignment)
      *
      * @var list<string>
      */
@@ -26,7 +33,7 @@ class User extends Authenticatable implements LaratrustUser
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang harus disembunyikan saat serialisasi
      *
      * @var list<string>
      */
@@ -36,7 +43,7 @@ class User extends Authenticatable implements LaratrustUser
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Cast tipe data untuk field tertentu
      *
      * @return array<string, string>
      */
@@ -46,5 +53,39 @@ class User extends Authenticatable implements LaratrustUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relasi: User bisa memiliki satu data Alumni (jika user tersebut alumni)
+     *
+     * Tidak semua user adalah alumni - admin, guru, kepsek dll tidak punya data alumni
+     */
+    public function alumni(): HasOne
+    {
+        return $this->hasOne(Alumni::class);
+    }
+
+    /**
+     * Cek apakah user adalah alumni
+     */
+    public function isAlumni(): bool
+    {
+        return $this->hasRole('alumni') && $this->alumni()->exists();
+    }
+
+    /**
+     * Cek apakah user adalah admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    /**
+     * Cek apakah user adalah guru
+     */
+    public function isGuru(): bool
+    {
+        return $this->hasRole('guru');
     }
 }

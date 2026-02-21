@@ -9,3 +9,66 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Custom animations untuk modal */
+@layer components {
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .animate-fadeOut {
+        animation: fadeOut 0.3s ease-in-out;
+    }
+
+    .animate-slideUp {
+        animation: slideUp 0.3s ease-in-out;
+    }
+
+    .animate-slideDown {
+        animation: slideDown 0.3s ease-in-out;
+    }
+}
