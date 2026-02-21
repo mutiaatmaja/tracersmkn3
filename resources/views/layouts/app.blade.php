@@ -119,24 +119,24 @@
                                 📄 Laporan
                             </a>
                             <!--
-                                        {{-- Lowongan --}}
-                                        <a href="{{ route('lowongan') }}" wire:navigate
-                                            class="{{ request()->is('admin/lowongan*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
+                                            {{-- Lowongan --}}
+                                            <a href="{{ route('lowongan') }}" wire:navigate
+                                                class="{{ request()->is('admin/lowongan*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 
-                                            💼 Lowongan
-                                        </a>
+                                                💼 Lowongan
+                                            </a>
 
-                                        {{-- Event --}}
-                                        <a href="{{ route('event') }}" wire:navigate
-                                            class="{{ request()->is('admin/event*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
+                                            {{-- Event --}}
+                                            <a href="{{ route('event') }}" wire:navigate
+                                                class="{{ request()->is('admin/event*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 
-                                            🎉 Event
-                                        </a>
-                                    -->
+                                                🎉 Event
+                                            </a>
+                                        -->
                             {{-- Pengguna --}}
-                            <a href="#" wire:navigate
+                            <a href="{{ route('users') }}" wire:navigate
                                 class="{{ request()->is('admin/pengguna*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 

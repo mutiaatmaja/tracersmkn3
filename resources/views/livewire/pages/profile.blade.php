@@ -124,6 +124,8 @@ new class extends Component {
         if ($this->password !== '') {
             $user->update([
                 'password' => $this->password,
+                'is_default_password' => false,
+                'default_password_plain' => null,
             ]);
 
             $this->password = '';

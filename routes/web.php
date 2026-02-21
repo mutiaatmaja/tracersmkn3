@@ -23,6 +23,10 @@ Route::middleware(['auth'])->group(function () {
 
 // Admin Routes - Livewire Pages
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Manajemen Pengguna
+    Route::livewire('/admin/pengguna', 'pages.users')->name('users');
+    Route::livewire('/admin/pengaturan/pengguna', 'pages.users')->name('settings.references.users');
+
     // Manajemen Kompetensi
     Route::livewire('/admin/kompetensi', 'pages.competencies')->name('competencies');
     Route::livewire('/admin/pengaturan/kompetensi', 'pages.competencies')->name('settings.references.competencies');

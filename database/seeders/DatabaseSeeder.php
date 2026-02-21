@@ -91,6 +91,8 @@ class DatabaseSeeder extends Seeder
                     'name' => $label.' User '.$index,
                     'email' => $name.$index.'@smkn3ptk.test',
                     'password' => bcrypt('password'),
+                    'is_default_password' => true,
+                    'default_password_plain' => 'password',
                 ]);
 
                 // Assign role ke user
