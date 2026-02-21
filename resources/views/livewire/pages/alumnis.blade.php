@@ -233,23 +233,19 @@ new class extends Component {
         </button>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 rounded-lg border border-gray-200 bg-white p-4 md:grid-cols-3">
+    <div class="space-y-3 rounded-lg border border-gray-200 bg-white p-4">
         <input type="text" wire:model.live="search" placeholder="Cari nama/NISN/NIK/kompetensi..."
-            class="w-full rounded-lg border border-gray-300 px-4 py-2 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 md:col-span-2" />
+            class="w-full rounded-lg border border-gray-300 px-4 py-2 transition focus:border-transparent focus:ring-2 focus:ring-blue-500" />
 
-        <div class="flex items-center gap-2">
-            <a href="{{ route('alumnis.template.download') }}"
-                class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
-                Download Template
-            </a>
+        <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('alumnis.dummy.download') }}"
-                class="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100">
+                class="order-3 inline-flex min-w-36 items-center justify-center rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 sm:order-1">
                 Download Dummy
             </a>
             <input type="file" wire:model="importFile" accept=".xlsx,.xls,.csv"
-                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm transition focus:border-transparent focus:ring-2 focus:ring-blue-500" />
+                class="order-1 w-full min-w-0 rounded-lg border border-gray-300 px-4 py-2 text-sm transition focus:border-transparent focus:ring-2 focus:ring-blue-500 sm:order-2 sm:min-w-55 sm:flex-1" />
             <button wire:click="importAlumnis" wire:loading.attr="disabled" wire:target="importAlumnis,importFile"
-                class="rounded-lg bg-gray-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60">
+                class="order-2 inline-flex min-w-36 items-center justify-center rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-60 sm:order-3">
                 <span wire:loading.remove wire:target="importAlumnis">Import</span>
                 <span wire:loading wire:target="importAlumnis">...</span>
             </button>

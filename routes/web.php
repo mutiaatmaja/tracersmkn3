@@ -1,7 +1,7 @@
 <?php
 
 use App\Exports\AlumnisDummyExport;
-use App\Exports\AlumnisTemplateExport;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -31,9 +31,6 @@ Route::middleware(['auth'])->group(function () {
 // Admin Routes - Livewire Pages
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::livewire('/admin/alumni', 'pages.alumnis')->name('alumnis');
-    Route::get('/admin/alumni/template/download', function () {
-        return Excel::download(new AlumnisTemplateExport, 'template_import_alumni.xlsx');
-    })->name('alumnis.template.download');
     Route::get('/admin/alumni/dummy/download', function () {
         return Excel::download(new AlumnisDummyExport, 'dummy_import_alumni.xlsx');
     })->name('alumnis.dummy.download');
@@ -56,6 +53,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Laporan
     Route::livewire('/admin/laporan', 'pages.laporan')->name('laporan');
+    Route::get('/admin/laporan/alumni/pdf', [LaporanController::class, 'alumniPdf'])->name('laporan.alumni.pdf');
 
     // Lowongan
     Route::livewire('/admin/lowongan', 'pages.lowongan')->name('lowongan');
