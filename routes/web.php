@@ -1,6 +1,9 @@
 <?php
 
+use App\Exports\AlumnisDummyExport;
+use App\Exports\AlumnisTemplateExport;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,6 +16,10 @@ Route::get('/template', function () {
     return view('template');
 });
 
+Route::middleware('guest')->group(function () {
+    Route::livewire('/klaim-alumni', 'pages.alumni-claim')->name('alumni.claim');
+});
+
 // Tentang Aplikasi
 Route::livewire('/tentang', 'pages.about')->name('about');
 
@@ -23,6 +30,14 @@ Route::middleware(['auth'])->group(function () {
 
 // Admin Routes - Livewire Pages
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::livewire('/admin/alumni', 'pages.alumnis')->name('alumnis');
+    Route::get('/admin/alumni/template/download', function () {
+        return Excel::download(new AlumnisTemplateExport, 'template_import_alumni.xlsx');
+    })->name('alumnis.template.download');
+    Route::get('/admin/alumni/dummy/download', function () {
+        return Excel::download(new AlumnisDummyExport, 'dummy_import_alumni.xlsx');
+    })->name('alumnis.dummy.download');
+
     // Manajemen Pengguna
     Route::livewire('/admin/pengguna', 'pages.users')->name('users');
     Route::livewire('/admin/pengaturan/pengguna', 'pages.users')->name('settings.references.users');

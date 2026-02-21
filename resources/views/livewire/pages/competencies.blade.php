@@ -172,9 +172,10 @@ new class extends Component {
             <h1 class="text-3xl font-bold text-gray-900">Manajemen Kompetensi</h1>
             <p class="text-gray-600 mt-1">Kelola kompetensi keahlian/jurusan yang ada di sekolah</p>
         </div>
-        <button wire:click="openCreateForm"
-            class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md">
-            + Tambah Kompetensi
+        <button wire:click="openCreateForm" wire:loading.attr="disabled" wire:target="openCreateForm"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed">
+            <span wire:loading.remove wire:target="openCreateForm">+ Tambah Kompetensi</span>
+            <span wire:loading wire:target="openCreateForm">Membuka...</span>
         </button>
     </div>
 
@@ -303,9 +304,13 @@ new class extends Component {
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-2">
-                                    <button wire:click="edit({{ $competency['id'] }})"
-                                        class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-200 transition">
-                                        Edit
+                                    <button wire:click="edit({{ $competency['id'] }})" wire:loading.attr="disabled"
+                                        wire:target="edit({{ $competency['id'] }})"
+                                        class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-200 transition disabled:opacity-60 disabled:cursor-not-allowed">
+                                        <span wire:loading.remove
+                                            wire:target="edit({{ $competency['id'] }})">Edit</span>
+                                        <span wire:loading
+                                            wire:target="edit({{ $competency['id'] }})">Membuka...</span>
                                     </button>
                                     <button wire:click="delete({{ $competency['id'] }})"
                                         onclick="confirm('Yakin hapus kompetensi ini?') || event.stopImmediatePropagation()"

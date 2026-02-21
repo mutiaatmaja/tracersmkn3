@@ -264,13 +264,15 @@ new class extends Component {
             <p class="text-gray-600 mt-1">Kelola data perguruan tinggi dan seluruh program studi alumni</p>
         </div>
         <div class="flex items-center gap-2">
-            <button wire:click="createUniversity"
-                class="bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition shadow-sm">
-                🏫 Tambah PT
+            <button wire:click="createUniversity" wire:loading.attr="disabled" wire:target="createUniversity"
+                class="bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+                <span wire:loading.remove wire:target="createUniversity">🏫 Tambah PT</span>
+                <span wire:loading wire:target="createUniversity">Membuka...</span>
             </button>
-            <button wire:click="createStudyProgram"
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm">
-                ➕ Tambah Prodi
+            <button wire:click="createStudyProgram" wire:loading.attr="disabled" wire:target="createStudyProgram"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+                <span wire:loading.remove wire:target="createStudyProgram">➕ Tambah Prodi</span>
+                <span wire:loading wire:target="createStudyProgram">Membuka...</span>
             </button>
         </div>
     </div>
@@ -287,8 +289,12 @@ new class extends Component {
                         <p class="text-sm text-gray-600 mt-1">{{ $university->study_programs_count }} program studi</p>
                     </div>
                     <div class="text-sm space-x-2">
-                        <button wire:click="editUniversity({{ $university->id }})"
-                            class="text-blue-600 hover:text-blue-800 font-medium">✏️ Edit</button>
+                        <button wire:click="editUniversity({{ $university->id }})" wire:loading.attr="disabled"
+                            wire:target="editUniversity({{ $university->id }})"
+                            class="text-blue-600 hover:text-blue-800 font-medium disabled:opacity-60 disabled:cursor-not-allowed">
+                            <span wire:loading.remove wire:target="editUniversity({{ $university->id }})">✏️ Edit</span>
+                            <span wire:loading wire:target="editUniversity({{ $university->id }})">Membuka...</span>
+                        </button>
                         <button wire:click="deleteUniversity({{ $university->id }})"
                             class="text-red-600 hover:text-red-800 font-medium"
                             onclick="return confirm('Yakin hapus perguruan tinggi ini? Program studi terkait juga akan terhapus.')">🗑️
@@ -333,8 +339,14 @@ new class extends Component {
                         <td class="px-6 py-4 text-sm text-gray-700">{{ $studyProgram->kode }}</td>
                         <td class="px-6 py-4 text-sm text-gray-900">{{ $studyProgram->nama }}</td>
                         <td class="px-6 py-4 text-sm text-right space-x-2">
-                            <button wire:click="editStudyProgram({{ $studyProgram->id }})"
-                                class="text-blue-600 hover:text-blue-800 font-medium">✏️ Edit</button>
+                            <button wire:click="editStudyProgram({{ $studyProgram->id }})" wire:loading.attr="disabled"
+                                wire:target="editStudyProgram({{ $studyProgram->id }})"
+                                class="text-blue-600 hover:text-blue-800 font-medium disabled:opacity-60 disabled:cursor-not-allowed">
+                                <span wire:loading.remove wire:target="editStudyProgram({{ $studyProgram->id }})">✏️
+                                    Edit</span>
+                                <span wire:loading
+                                    wire:target="editStudyProgram({{ $studyProgram->id }})">Membuka...</span>
+                            </button>
                             <button wire:click="deleteStudyProgram({{ $studyProgram->id }})"
                                 class="text-red-600 hover:text-red-800 font-medium"
                                 onclick="return confirm('Yakin hapus program studi ini?')">🗑️ Hapus</button>

@@ -23,15 +23,23 @@ class Alumni extends Model
      */
     protected $fillable = [
         'user_id',
+        'nama_lengkap',
         'nisn',
         'nik',
         'competency_id',
         'tahun_lulus',
         'jenis_kelamin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'nomor_telepon',
+        'alamat',
+        'email_pribadi',
         'last_tracer_date',
         'next_tracer_eligible_date',
         'foto_profil',
         'link_media_sosial',
+        'is_claimed',
+        'claimed_at',
     ];
 
     /**
@@ -39,8 +47,11 @@ class Alumni extends Model
      */
     protected $casts = [
         'tahun_lulus' => 'integer',
+        'tanggal_lahir' => 'date',
         'last_tracer_date' => 'date',
         'next_tracer_eligible_date' => 'date',
+        'is_claimed' => 'boolean',
+        'claimed_at' => 'datetime',
     ];
 
     /**

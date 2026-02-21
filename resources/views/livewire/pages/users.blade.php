@@ -353,13 +353,15 @@ new class extends Component {
             <p class="text-gray-600 mt-1">Kelola peran dan data pengguna dalam satu halaman</p>
         </div>
         <div class="flex items-center gap-2">
-            <button wire:click="createRole"
-                class="bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition shadow-sm">
-                🛡️ Tambah Peran
+            <button wire:click="createRole" wire:loading.attr="disabled" wire:target="createRole"
+                class="bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+                <span wire:loading.remove wire:target="createRole">🛡️ Tambah Peran</span>
+                <span wire:loading wire:target="createRole">Membuka...</span>
             </button>
-            <button wire:click="createUser"
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm">
-                ➕ Tambah Pengguna
+            <button wire:click="createUser" wire:loading.attr="disabled" wire:target="createUser"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+                <span wire:loading.remove wire:target="createUser">➕ Tambah Pengguna</span>
+                <span wire:loading wire:target="createUser">Membuka...</span>
             </button>
         </div>
     </div>
@@ -375,8 +377,12 @@ new class extends Component {
                         <p class="text-xs text-gray-500">{{ $role->name }}</p>
                     </div>
                     <div class="mt-2 flex items-center gap-2 text-xs whitespace-nowrap">
-                        <button wire:click="editRole({{ $role->id }})"
-                            class="text-blue-600 hover:text-blue-800 font-medium">Edit</button>
+                        <button wire:click="editRole({{ $role->id }})" wire:loading.attr="disabled"
+                            wire:target="editRole({{ $role->id }})"
+                            class="text-blue-600 hover:text-blue-800 font-medium disabled:opacity-60 disabled:cursor-not-allowed">
+                            <span wire:loading.remove wire:target="editRole({{ $role->id }})">Edit</span>
+                            <span wire:loading wire:target="editRole({{ $role->id }})">Membuka...</span>
+                        </button>
                         <button wire:click="deleteRole({{ $role->id }})"
                             class="text-red-600 hover:text-red-800 font-medium"
                             onclick="return confirm('Yakin hapus peran ini?')">Hapus</button>
@@ -451,15 +457,24 @@ new class extends Component {
                                         Reset...
                                     </span>
                                 </button>
-                                <button wire:click="editUser({{ $user->id }})"
-                                    class="rounded border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">Edit</button>
+                                <button wire:click="editUser({{ $user->id }})" wire:loading.attr="disabled"
+                                    wire:target="editUser({{ $user->id }})"
+                                    class="rounded border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 disabled:opacity-60 disabled:cursor-not-allowed">
+                                    <span wire:loading.remove wire:target="editUser({{ $user->id }})">Edit</span>
+                                    <span wire:loading wire:target="editUser({{ $user->id }})">Membuka...</span>
+                                </button>
                                 <button wire:click="deleteUser({{ $user->id }})"
                                     class="rounded border border-red-200 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100"
                                     onclick="return confirm('Yakin hapus pengguna ini?')">Hapus</button>
                                 @if (!$isAlumniRole)
                                     <button wire:click="openChangeRole({{ $user->id }})"
-                                        class="rounded border border-indigo-200 bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-100">Ubah
-                                        Peran</button>
+                                        wire:loading.attr="disabled" wire:target="openChangeRole({{ $user->id }})"
+                                        class="rounded border border-indigo-200 bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-100 disabled:opacity-60 disabled:cursor-not-allowed">
+                                        <span wire:loading.remove
+                                            wire:target="openChangeRole({{ $user->id }})">Ubah Peran</span>
+                                        <span wire:loading
+                                            wire:target="openChangeRole({{ $user->id }})">Membuka...</span>
+                                    </button>
                                 @endif
                             </div>
                         </td>

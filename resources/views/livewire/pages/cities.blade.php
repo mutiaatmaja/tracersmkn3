@@ -195,9 +195,10 @@ new class extends Component {
             <h1 class="text-3xl font-bold text-gray-900">Kabupaten / Kota</h1>
             <p class="text-gray-600 mt-1">Kelola data kabupaten dan kota di Indonesia</p>
         </div>
-        <button wire:click="create"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm">
-            ➕ Tambah Kota/Kabupaten
+        <button wire:click="create" wire:loading.attr="disabled" wire:target="create"
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+            <span wire:loading.remove wire:target="create">➕ Tambah Kota/Kabupaten</span>
+            <span wire:loading wire:target="create">Membuka...</span>
         </button>
     </div>
 
@@ -239,9 +240,11 @@ new class extends Component {
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $city->province->nama }}</td>
                         <td class="px-6 py-4 text-sm text-right space-x-2">
-                            <button wire:click="edit({{ $city->id }})"
-                                class="text-blue-600 hover:text-blue-800 font-medium">
-                                ✏️ Edit
+                            <button wire:click="edit({{ $city->id }})" wire:loading.attr="disabled"
+                                wire:target="edit({{ $city->id }})"
+                                class="text-blue-600 hover:text-blue-800 font-medium disabled:opacity-60 disabled:cursor-not-allowed">
+                                <span wire:loading.remove wire:target="edit({{ $city->id }})">✏️ Edit</span>
+                                <span wire:loading wire:target="edit({{ $city->id }})">Membuka...</span>
                             </button>
                             <button wire:click="delete({{ $city->id }})"
                                 class="text-red-600 hover:text-red-800 font-medium"
