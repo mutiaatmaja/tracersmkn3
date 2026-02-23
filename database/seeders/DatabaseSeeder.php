@@ -35,6 +35,9 @@ class DatabaseSeeder extends Seeder
         // Panggil seeder daftar negara
         $this->call(CountrySeeder::class);
 
+        // Panggil seeder dummy data tracer submission
+        $this->call(TracerSubmissionSeeder::class);
+
         // Buat data setting awal untuk informasi sekolah
         $this->seedSettings();
 
