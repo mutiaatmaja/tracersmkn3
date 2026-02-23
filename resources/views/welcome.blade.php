@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gradient-to-b from-blue-50 to-white font-sans antialiased">
+<body class="bg-linear-to-b from-blue-50 to-white font-sans antialiased">
     <!-- Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,9 +36,10 @@
                                 class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
                         @else
                             <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
-                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Register</a>
+                            @if (Route::has('alumni.claim'))
+                                <a href="{{ route('alumni.claim') }}"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Klaim
+                                    Alumni</a>
                             @endif
                         @endauth
                     </div>
@@ -48,7 +49,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+    <section class="relative overflow-hidden bg-linear-to-br from-blue-600 to-blue-800 text-white">
         <div
             class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20">
         </div>
@@ -58,7 +59,7 @@
                 <p class="text-lg md:text-xl text-blue-100 mb-8">Sistem pelacakan alumni untuk mengetahui perkembangan
                     karir dan kesuksesan lulusan SMKN 3 Pontianak</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('register') }}"
+                    <a href="{{ route('alumni.claim') }}"
                         class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition shadow-lg">Daftar
                         Sekarang</a>
                     <a href="#statistik"
@@ -141,7 +142,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Chart 1: Bidang Pekerjaan -->
-                <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-6 md:p-8">
+                <div class="bg-linear-to-br from-blue-50 to-white rounded-xl shadow-lg p-6 md:p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Bidang Pekerjaan Alumni</h3>
                     <div class="space-y-4">
                         <div>
@@ -193,7 +194,7 @@
                 </div>
 
                 <!-- Chart 2: Waktu Tunggu Kerja -->
-                <div class="bg-gradient-to-br from-green-50 to-white rounded-xl shadow-lg p-6 md:p-8">
+                <div class="bg-linear-to-br from-green-50 to-white rounded-xl shadow-lg p-6 md:p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Waktu Tunggu Mendapat Pekerjaan</h3>
                     <div class="space-y-4">
                         <div>
@@ -297,12 +298,12 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <section class="py-16 bg-linear-to-r from-blue-600 to-blue-800 text-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Bergabunglah dengan Tracer Study Kami</h2>
             <p class="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">Luangkan waktu 5-10 menit untuk mengisi data Anda
                 dan bantu SMKN 3 Pontianak menjadi lebih baik</p>
-            <a href="{{ route('register') }}"
+            <a href="{{ route('alumni.claim') }}"
                 class="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition shadow-lg">Mulai
                 Isi Data</a>
         </div>

@@ -29,6 +29,12 @@ class DatabaseSeeder extends Seeder
         // Panggil seeder perguruan tinggi dan program studi
         $this->call(UniversityStudyProgramSeeder::class);
 
+        // Panggil seeder provinsi dan kabupaten/kota dari CSV Indonesia
+        $this->call(ProvinceSeeder::class);
+
+        // Panggil seeder daftar negara
+        $this->call(CountrySeeder::class);
+
         // Buat data setting awal untuk informasi sekolah
         $this->seedSettings();
 

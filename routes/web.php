@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]); // Nonaktifkan registrasi default Laravel
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/template', function () {
@@ -26,6 +26,9 @@ Route::livewire('/tentang', 'pages.about')->name('about');
 // Profil
 Route::middleware(['auth'])->group(function () {
     Route::livewire('/profil', 'pages.profile')->name('profile');
+    Route::middleware(['role:alumni'])->group(function () {
+        Route::livewire('/tracer-study', 'pages.tracer-study')->name('tracer.study');
+    });
 });
 
 // Admin Routes - Livewire Pages

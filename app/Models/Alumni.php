@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Model untuk Data Alumni
@@ -68,6 +69,11 @@ class Alumni extends Model
     public function competency(): BelongsTo
     {
         return $this->belongsTo(Competency::class);
+    }
+
+    public function tracerSubmissions(): HasMany
+    {
+        return $this->hasMany(TracerSubmission::class);
     }
 
     /**

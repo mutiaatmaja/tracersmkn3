@@ -10,7 +10,7 @@
                             <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Dashboard Alumni</h1>
                             <p class="text-gray-600">Ringkasan statistik pribadi alumni Anda.</p>
                         </div>
-                        <a href="#"
+                        <a href="{{ route('tracer.study') }}"
                             class="inline-flex items-center justify-center bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Isi
                             Tracer Study</a>
                     </div>

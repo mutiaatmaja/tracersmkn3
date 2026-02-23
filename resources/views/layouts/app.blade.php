@@ -48,10 +48,10 @@
                                 </a>
                             @endif
 
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
+                            @if (Route::has('alumni.claim'))
+                                <a href="{{ route('alumni.claim') }}"
                                     class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm">
-                                    Register
+                                    Klaim Alumni
                                 </a>
                             @endif
                         @else
@@ -119,22 +119,22 @@
                                 📄 Laporan
                             </a>
                             <!--
-                                                {{-- Lowongan --}}
-                                                <a href="{{ route('lowongan') }}" wire:navigate
-                                                    class="{{ request()->is('admin/lowongan*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
+                                                    {{-- Lowongan --}}
+                                                    <a href="{{ route('lowongan') }}" wire:navigate
+                                                        class="{{ request()->is('admin/lowongan*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 
-                                                    💼 Lowongan
-                                                </a>
+                                                        💼 Lowongan
+                                                    </a>
 
-                                                {{-- Event --}}
-                                                <a href="{{ route('event') }}" wire:navigate
-                                                    class="{{ request()->is('admin/event*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
+                                                    {{-- Event --}}
+                                                    <a href="{{ route('event') }}" wire:navigate
+                                                        class="{{ request()->is('admin/event*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 
-                                                    🎉 Event
-                                                </a>
-                                            -->
+                                                        🎉 Event
+                                                    </a>
+                                                -->
                             {{-- Pengguna --}}
                             <a href="{{ route('users') }}" wire:navigate
                                 class="{{ request()->is('admin/pengguna*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
