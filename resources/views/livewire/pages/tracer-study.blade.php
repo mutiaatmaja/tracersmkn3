@@ -733,7 +733,7 @@ new class extends Component {
                     <p class="mb-2 text-xs text-gray-500">Apakah anda melanjutkan studi?</p>
                     <select wire:model.live="b1StudiLanjut"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
-                        <option value="">Pilih</option>
+                        <option value="">Pilih</option> 
                         <option value="ya">Ya</option>
                         <option value="tidak">Tidak</option>
                     </select>

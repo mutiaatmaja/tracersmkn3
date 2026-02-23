@@ -16,6 +16,33 @@
 </head>
 
 <body class="bg-linear-to-b from-blue-50 to-white font-sans antialiased">
+    @php
+        $instansiLabels = [
+            'instansi_pemerintah' => 'Instansi Pemerintah',
+            'lembaga_internasional' => 'Lembaga Internasional',
+            'lembaga_non_profit' => 'Lembaga Non-profit',
+            'perusahaan_swasta_bumn_bumd' => 'Perusahaan Swasta / BUMN / BUMD',
+            'koperasi' => 'Koperasi',
+            'usaha_perorangan' => 'Usaha Perorangan',
+            'rumah_tangga' => 'Rumah Tangga',
+        ];
+
+        $keselarasanLabels = [
+            'sangat_tidak_selaras' => 'Sangat Tidak Selaras',
+            'tidak_selaras' => 'Tidak Selaras',
+            'selaras' => 'Selaras',
+            'sangat_selaras' => 'Sangat Selaras',
+        ];
+
+        $alumniPerTahunTotal = (int) $alumniPerTahun->sum('total');
+        $instansiTotal = (int) $jenisInstansiStats->sum('total');
+        $keselarasanPekerjaanTotal = (int) $keselarasanPekerjaan->sum('total');
+        $keselarasanStudiTotal = (int) $keselarasanStudi->sum('total');
+        $kampusFavoritTotal = (int) $kampusFavorit->sum('total');
+
+        $formatPercent = fn(float|int $value): string => number_format((float) $value, 1, ',', '.');
+    @endphp
+
     <!-- Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +101,6 @@
     <section id="statistik" class="py-12 -mt-16 relative z-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Stat Card 1 -->
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                     <div class="flex items-center justify-between mb-4">
                         <div class="bg-blue-100 text-blue-600 w-12 h-12 rounded-lg flex items-center justify-center">
@@ -84,11 +110,10 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">2,847</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalAlumni) }}</h3>
                     <p class="text-gray-600 font-medium">Total Alumni Terdaftar</p>
                 </div>
 
-                <!-- Stat Card 2 -->
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                     <div class="flex items-center justify-between mb-4">
                         <div class="bg-green-100 text-green-600 w-12 h-12 rounded-lg flex items-center justify-center">
@@ -98,11 +123,10 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">87.3%</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $formatPercent($persenBekerja) }}%</h3>
                     <p class="text-gray-600 font-medium">Alumni Bekerja</p>
                 </div>
 
-                <!-- Stat Card 3 -->
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                     <div class="flex items-center justify-between mb-4">
                         <div
@@ -113,11 +137,10 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">8.2%</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $formatPercent($persenStudi) }}%</h3>
                     <p class="text-gray-600 font-medium">Melanjutkan Kuliah</p>
                 </div>
 
-                <!-- Stat Card 4 -->
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                     <div class="flex items-center justify-between mb-4">
                         <div
@@ -128,8 +151,8 @@
                             </svg>
                         </div>
                     </div>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">92.5%</h3>
-                    <p class="text-gray-600 font-medium">Tingkat Kepuasan Alumni</p>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $formatPercent($persenWirausaha) }}%</h3>
+                    <p class="text-gray-600 font-medium">Alumni Berwirausaha</p>
                 </div>
             </div>
         </div>
@@ -138,106 +161,140 @@
     <!-- Detailed Statistics Section -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Statistik Penempatan Alumni</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Statistik Ringkas Publik</h2>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Chart 1: Bidang Pekerjaan -->
                 <div class="bg-linear-to-br from-blue-50 to-white rounded-xl shadow-lg p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Bidang Pekerjaan Alumni</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Tren Alumni per Tahun Lulus</h3>
+                    @php
+                        $maxAlumniPerTahun = $alumniPerTahun->max('total') ?? 0;
+                    @endphp
                     <div class="space-y-4">
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">Teknologi & IT</span>
-                                <span class="text-gray-900 font-bold">35%</span>
+                        @forelse ($alumniPerTahun as $row)
+                            @php
+                                $barWidth =
+                                    $maxAlumniPerTahun > 0 ? round(($row->total / $maxAlumniPerTahun) * 100, 1) : 0;
+                            @endphp
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-700 font-medium">{{ $row->tahun_lulus }}</span>
+                                    <span class="text-gray-900 font-bold">{{ number_format($row->total) }}
+                                        ({{ $formatPercent($alumniPerTahunTotal > 0 ? round(($row->total / $alumniPerTahunTotal) * 100, 1) : 0) }}%)
+                                    </span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-blue-600 h-3 rounded-full" style="width: {{ $barWidth }}%">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-blue-600 h-3 rounded-full" style="width: 35%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">Industri & Manufaktur</span>
-                                <span class="text-gray-900 font-bold">28%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-green-600 h-3 rounded-full" style="width: 28%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">Wirausaha</span>
-                                <span class="text-gray-900 font-bold">15%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-purple-600 h-3 rounded-full" style="width: 15%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">Jasa & Perdagangan</span>
-                                <span class="text-gray-900 font-bold">12%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-yellow-600 h-3 rounded-full" style="width: 12%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">Lainnya</span>
-                                <span class="text-gray-900 font-bold">10%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-red-600 h-3 rounded-full" style="width: 10%"></div>
-                            </div>
-                        </div>
+                        @empty
+                            <p class="text-sm text-gray-600">Belum ada data tahun lulus.</p>
+                        @endforelse
                     </div>
                 </div>
 
-                <!-- Chart 2: Waktu Tunggu Kerja -->
                 <div class="bg-linear-to-br from-green-50 to-white rounded-xl shadow-lg p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Waktu Tunggu Mendapat Pekerjaan</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Statistik Instansi, Gaji, dan Keselarasan</h3>
                     <div class="space-y-4">
                         <div>
                             <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">
-                                    < 3 Bulan</span>
-                                        <span class="text-gray-900 font-bold">62%</span>
+                                <span class="text-gray-700 font-medium">Respon Tracer Submitted</span>
+                                <span
+                                    class="text-gray-900 font-bold">{{ number_format($totalSubmittedTracer) }}</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-green-600 h-3 rounded-full" style="width: 62%"></div>
+                                <div class="bg-green-600 h-3 rounded-full"
+                                    style="width: {{ $totalAlumni > 0 ? round(($jumlahPengisiTracer / $totalAlumni) * 100, 1) : 0 }}%">
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">3-6 Bulan</span>
-                                <span class="text-gray-900 font-bold">23%</span>
+
+                        <div class="rounded-lg border border-green-100 bg-white px-3 py-3">
+                            <p class="text-sm text-gray-600">Average Gaji (Estimasi)</p>
+                            <p class="mt-1 text-xl font-bold text-gray-900">
+                                {{ $averageGaji ? 'Rp ' . number_format($averageGaji, 0, ',', '.') : '-' }}
+                            </p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p class="text-sm font-semibold text-gray-700">Jenis Instansi Teratas</p>
+                            @forelse ($jenisInstansiStats as $instansi)
+                                <div
+                                    class="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-3 py-2">
+                                    <p class="text-sm text-gray-700 truncate pr-3">
+                                        {{ $instansiLabels[$instansi->c8_jenis_instansi] ?? str_replace('_', ' ', str($instansi->c8_jenis_instansi)->title()) }}
+                                    </p>
+                                    <p class="text-sm font-semibold text-gray-900">
+                                        {{ number_format($instansi->total) }}
+                                        ({{ $formatPercent($instansiTotal > 0 ? round(($instansi->total / $instansiTotal) * 100, 1) : 0) }}%)
+                                    </p>
+                                </div>
+                            @empty
+                                <p class="text-sm text-gray-600">Belum ada data jenis instansi.</p>
+                            @endforelse
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="rounded-lg border border-gray-100 bg-white px-3 py-2">
+                                <p class="mb-2 text-xs font-semibold text-gray-600">Keselarasan Pekerjaan</p>
+                                <div class="space-y-1">
+                                    @forelse ($keselarasanPekerjaan as $row)
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span
+                                                class="text-gray-700">{{ $keselarasanLabels[$row->c14_kesesuaian_pekerjaan] ?? str_replace('_', ' ', str($row->c14_kesesuaian_pekerjaan)->title()) }}</span>
+                                            <span class="font-semibold text-gray-900">{{ number_format($row->total) }}
+                                                ({{ $formatPercent($keselarasanPekerjaanTotal > 0 ? round(($row->total / $keselarasanPekerjaanTotal) * 100, 1) : 0) }}%)
+                                            </span>
+                                        </div>
+                                    @empty
+                                        <p class="text-xs text-gray-500">Belum ada data.</p>
+                                    @endforelse
+                                </div>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-blue-600 h-3 rounded-full" style="width: 23%"></div>
+
+                            <div class="rounded-lg border border-gray-100 bg-white px-3 py-2">
+                                <p class="mb-2 text-xs font-semibold text-gray-600">Keselarasan Studi</p>
+                                <div class="space-y-1">
+                                    @forelse ($keselarasanStudi as $row)
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span
+                                                class="text-gray-700">{{ $keselarasanLabels[$row->d5_kesesuaian_studi] ?? str_replace('_', ' ', str($row->d5_kesesuaian_studi)->title()) }}</span>
+                                            <span class="font-semibold text-gray-900">{{ number_format($row->total) }}
+                                                ({{ $formatPercent($keselarasanStudiTotal > 0 ? round(($row->total / $keselarasanStudiTotal) * 100, 1) : 0) }}%)
+                                            </span>
+                                        </div>
+                                    @empty
+                                        <p class="text-xs text-gray-500">Belum ada data.</p>
+                                    @endforelse
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">6-12 Bulan</span>
-                                <span class="text-gray-900 font-bold">11%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-yellow-600 h-3 rounded-full" style="width: 11%"></div>
-                            </div>
+
+                        <div class="space-y-2">
+                            <p class="text-sm font-semibold text-gray-700">Kampus Favorit</p>
+                            @forelse ($kampusFavorit as $kampus)
+                                <div
+                                    class="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-3 py-2">
+                                    <p class="text-sm text-gray-700 truncate pr-3">{{ $kampus->d3_nama_pt }}</p>
+                                    <p class="text-sm font-semibold text-gray-900">{{ number_format($kampus->total) }}
+                                        ({{ $formatPercent($kampusFavoritTotal > 0 ? round(($kampus->total / $kampusFavoritTotal) * 100, 1) : 0) }}%)
+                                    </p>
+                                </div>
+                            @empty
+                                <p class="text-sm text-gray-600">Belum ada data kampus dari isian tracer.</p>
+                            @endforelse
                         </div>
+
                         <div>
                             <div class="flex justify-between mb-2">
-                                <span class="text-gray-700 font-medium">> 12 Bulan</span>
-                                <span class="text-gray-900 font-bold">4%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-red-600 h-3 rounded-full" style="width: 4%"></div>
+                                <span class="text-gray-700 font-medium">Pengisi Tracer (Alumni Unik)</span>
+                                <span class="text-gray-900 font-bold">{{ number_format($jumlahPengisiTracer) }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="mt-6 p-4 bg-green-100 rounded-lg">
-                        <p class="text-sm text-green-800"><strong>Insight:</strong> Mayoritas alumni (62%) mendapat
-                            pekerjaan kurang dari 3 bulan setelah lulus.</p>
+                        <p class="text-sm text-green-800"><strong>Insight:</strong> Statistik ini bersifat agregat dan
+                            diperbarui otomatis dari data tracer alumni.</p>
                     </div>
                 </div>
             </div>
