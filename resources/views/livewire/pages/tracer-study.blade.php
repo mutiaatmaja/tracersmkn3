@@ -124,6 +124,77 @@ new class extends Component {
 
     public ?string $g4KesesuaianPkl = null;
 
+    protected array $messages = [
+        'required' => 'Kolom :attribute wajib diisi.',
+        'required_if' => 'Kolom :attribute wajib diisi.',
+        'email' => 'Kolom :attribute harus berupa alamat email yang valid.',
+        'string' => 'Kolom :attribute harus berupa teks.',
+        'integer' => 'Kolom :attribute harus berupa angka.',
+        'array' => 'Kolom :attribute harus berupa pilihan yang valid.',
+        'date' => 'Kolom :attribute harus berupa tanggal yang valid.',
+        'max' => 'Kolom :attribute melebihi batas yang diperbolehkan.',
+        'min' => 'Kolom :attribute belum memenuhi batas minimal.',
+        'in' => 'Pilihan :attribute tidak valid.',
+        'exists' => 'Pilihan :attribute tidak ditemukan.',
+    ];
+
+    protected array $validationAttributes = [
+        'a1StatusPerkawinan' => 'A1 status perkawinan',
+        'a2NegaraTinggal' => 'A2 negara tempat tinggal',
+        'a3ProvinsiId' => 'A3 provinsi',
+        'a4KotaId' => 'A4 kabupaten/kota',
+        'a5EmailAktif' => 'A5 email aktif',
+        'a6NoHp' => 'A6 nomor HP',
+        'b1StudiLanjut' => 'B1 studi lanjut',
+        'b2Bekerja' => 'B2 bekerja/berwirausaha',
+        'b3BentukPekerjaan' => 'B3 bentuk pekerjaan',
+        'b4PenghasilanMin1Jam' => 'B4 penghasilan minimal 1 jam',
+        'b5MembantuUsaha' => 'B5 membantu usaha keluarga',
+        'b6SementaraTidakBekerja' => 'B6 sementara tidak bekerja',
+        'c1WaktuPekerjaanPertama' => 'C1 waktu mendapat pekerjaan',
+        'c2LokasiKerja' => 'C2 lokasi kerja',
+        'c3Jabatan' => 'C3 jabatan',
+        'c4NamaPerusahaan' => 'C4 nama perusahaan',
+        'c5NamaAtasan' => 'C5 nama atasan',
+        'c6JabatanAtasan' => 'C6 jabatan atasan',
+        'c7KontakAtasan' => 'C7 kontak atasan',
+        'c8JenisInstansi' => 'C8 jenis instansi',
+        'c9JamKerjaPerMinggu' => 'C9 jam kerja per minggu',
+        'c10PenghasilanBulanan' => 'C10 penghasilan bulanan',
+        'c11FrekuensiGantiKerja' => 'C11 frekuensi ganti kerja',
+        'c12AlasanGantiKerja' => 'C12 alasan ganti kerja',
+        'c12AlasanLainnya' => 'C12 alasan lainnya',
+        'c13CaraDapatKerja' => 'C13 cara mendapatkan pekerjaan',
+        'c13CaraLainnya' => 'C13 cara lainnya',
+        'c14KesesuaianPekerjaan' => 'C14 kesesuaian pekerjaan',
+        'd1LokasiStudi' => 'D1 lokasi studi',
+        'd2Jenjang' => 'D2 jenjang pendidikan',
+        'd3NamaPt' => 'D3 nama perguruan tinggi',
+        'd4ProgramStudi' => 'D4 program studi',
+        'd5KesesuaianStudi' => 'D5 kesesuaian studi',
+        'd6MulaiStudi' => 'D6 mulai studi',
+        'd7AlasanLanjut' => 'D7 alasan melanjutkan studi',
+        'd7AlasanLainnya' => 'D7 alasan lainnya',
+        'e1AktivitasMingguan' => 'E1 aktivitas mingguan',
+        'e2AktivitasCariKerja' => 'E2 aktivitas mencari kerja',
+        'e3LamaCariBulan' => 'E3 lama mencari kerja (bulan)',
+        'e4AlasanMencari' => 'E4 alasan mencari pekerjaan',
+        'f1LokasiUsaha' => 'F1 lokasi usaha',
+        'f2BentukUsaha' => 'F2 bentuk usaha',
+        'f2BentukUsahaLainnya' => 'F2 bentuk usaha lainnya',
+        'f3BidangUsaha' => 'F3 bidang usaha',
+        'f4ProdukUsaha' => 'F4 produk usaha',
+        'f5Kepemilikan' => 'F5 kepemilikan usaha',
+        'f6MulaiUsaha' => 'F6 mulai usaha',
+        'f7OmsetBulanan' => 'F7 omset bulanan',
+        'f8RiwayatGantiUsaha' => 'F8 riwayat pergantian usaha',
+        'g1AlasanPilihSmk' => 'G1 alasan memilih SMK',
+        'g1AlasanLainnya' => 'G1 alasan lainnya',
+        'g2DurasiPkl' => 'G2 durasi PKL',
+        'g3KualitasPkl' => 'G3 kualitas PKL',
+        'g4KesesuaianPkl' => 'G4 kesesuaian PKL',
+    ];
+
     public function mount(): void
     {
         abort_unless(Auth::check() && Auth::user()->isAlumni(), 403);
@@ -735,7 +806,7 @@ new class extends Component {
                     <p class="mb-2 text-xs text-gray-500">Apakah anda melanjutkan studi?</p>
                     <select wire:model.live="b1StudiLanjut"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
-                        <option value="">Pilih</option> 
+                        <option value="">Pilih</option>
                         <option value="ya">Ya</option>
                         <option value="tidak">Tidak</option>
                     </select>
@@ -780,7 +851,8 @@ new class extends Component {
                 <div>
                     <label class="mb-1 block text-sm font-medium text-gray-700">B4. Bekerja minimal 1 jam untuk
                         penghasilan</label>
-                    <p class="mb-2 text-xs text-gray-500">Apakah anda bekerja minimal 1 jam untuk memperoleh penghasilan?</p>
+                    <p class="mb-2 text-xs text-gray-500">Apakah anda bekerja minimal 1 jam untuk memperoleh
+                        penghasilan?</p>
                     <select wire:model.defer="b4PenghasilanMin1Jam"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih</option>
@@ -865,14 +937,16 @@ new class extends Component {
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C3. Jabatan / Posisi</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa jabatan atau posisi pekerjaan anda saat ini?</p><input type="text" wire:model.defer="c3Jabatan"
+                        <p class="mb-2 text-xs text-gray-500">Apa jabatan atau posisi pekerjaan anda saat ini?</p>
+                        <input type="text" wire:model.defer="c3Jabatan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('c3Jabatan')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C4. Nama Perusahaan</label>
-                        <p class="mb-2 text-xs text-gray-500">Di perusahaan/lembaga mana anda bekerja?</p><input type="text" wire:model.defer="c4NamaPerusahaan"
+                        <p class="mb-2 text-xs text-gray-500">Di perusahaan/lembaga mana anda bekerja?</p><input
+                            type="text" wire:model.defer="c4NamaPerusahaan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('c4NamaPerusahaan')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -880,15 +954,18 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C5. Nama Atasan
                             Langsung</label>
-                        <p class="mb-2 text-xs text-gray-500">Siapa nama atasan langsung anda?</p><input type="text" wire:model.defer="c5NamaAtasan"
+                        <p class="mb-2 text-xs text-gray-500">Siapa nama atasan langsung anda?</p><input
+                            type="text" wire:model.defer="c5NamaAtasan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C6. Jabatan Atasan</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa jabatan atasan langsung anda?</p><input type="text" wire:model.defer="c6JabatanAtasan"
+                        <p class="mb-2 text-xs text-gray-500">Apa jabatan atasan langsung anda?</p><input
+                            type="text" wire:model.defer="c6JabatanAtasan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C7. Kontak Atasan</label>
-                        <p class="mb-2 text-xs text-gray-500">Bagaimana kontak atasan langsung anda?</p><input type="text" wire:model.defer="c7KontakAtasan"
+                        <p class="mb-2 text-xs text-gray-500">Bagaimana kontak atasan langsung anda?</p><input
+                            type="text" wire:model.defer="c7KontakAtasan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div>
@@ -911,7 +988,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C9. Jam Kerja per
                             Minggu</label>
-                        <p class="mb-2 text-xs text-gray-500">Berapa total jam kerja anda dalam 1 minggu?</p><input type="number" wire:model.defer="c9JamKerjaPerMinggu"
+                        <p class="mb-2 text-xs text-gray-500">Berapa total jam kerja anda dalam 1 minggu?</p><input
+                            type="number" wire:model.defer="c9JamKerjaPerMinggu"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('c9JamKerjaPerMinggu')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -967,7 +1045,8 @@ new class extends Component {
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C12. Alasan Lainnya</label>
-                        <p class="mb-2 text-xs text-gray-500">Jika alasan lainnya, tuliskan secara singkat.</p><input type="text" wire:model.defer="c12AlasanLainnya"
+                        <p class="mb-2 text-xs text-gray-500">Jika alasan lainnya, tuliskan secara singkat.</p><input
+                            type="text" wire:model.defer="c12AlasanLainnya"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('c12AlasanLainnya')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -993,7 +1072,8 @@ new class extends Component {
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">C13. Cara Lainnya</label>
-                        <p class="mb-2 text-xs text-gray-500">Jika cara lainnya, tuliskan secara singkat.</p><input type="text" wire:model.defer="c13CaraLainnya"
+                        <p class="mb-2 text-xs text-gray-500">Jika cara lainnya, tuliskan secara singkat.</p><input
+                            type="text" wire:model.defer="c13CaraLainnya"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('c13CaraLainnya')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -1034,7 +1114,8 @@ new class extends Component {
                 </h2>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D1. Lokasi Studi</label>
-                        <p class="mb-2 text-xs text-gray-500">Di mana lokasi studi lanjutan anda?</p><select wire:model.defer="d1LokasiStudi"
+                        <p class="mb-2 text-xs text-gray-500">Di mana lokasi studi lanjutan anda?</p><select
+                            wire:model.defer="d1LokasiStudi"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="dalam_negeri">Dalam negeri</option>
@@ -1046,7 +1127,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D2. Jenjang
                             Pendidikan</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa jenjang pendidikan yang sedang/akan anda tempuh?</p><select wire:model.defer="d2Jenjang"
+                        <p class="mb-2 text-xs text-gray-500">Apa jenjang pendidikan yang sedang/akan anda tempuh?</p>
+                        <select wire:model.defer="d2Jenjang"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="d1">D1</option>
@@ -1061,14 +1143,16 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D3. Nama Perguruan
                             Tinggi</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa nama perguruan tinggi tempat anda studi?</p><input type="text" wire:model.defer="d3NamaPt"
+                        <p class="mb-2 text-xs text-gray-500">Apa nama perguruan tinggi tempat anda studi?</p><input
+                            type="text" wire:model.defer="d3NamaPt"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('d3NamaPt')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D4. Program Studi</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa program studi/jurusan yang anda ambil?</p><input type="text" wire:model.defer="d4ProgramStudi"
+                        <p class="mb-2 text-xs text-gray-500">Apa program studi/jurusan yang anda ambil?</p><input
+                            type="text" wire:model.defer="d4ProgramStudi"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('d4ProgramStudi')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -1076,7 +1160,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D5. Kesesuaian
                             Studi</label>
-                        <p class="mb-2 text-xs text-gray-500">Seberapa sesuai studi lanjutan anda dengan kompetensi SMK?</p><select wire:model.defer="d5KesesuaianStudi"
+                        <p class="mb-2 text-xs text-gray-500">Seberapa sesuai studi lanjutan anda dengan kompetensi
+                            SMK?</p><select wire:model.defer="d5KesesuaianStudi"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="sangat_tidak_selaras">Sangat tidak selaras</option>
@@ -1090,7 +1175,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D6. Waktu Mulai
                             Studi</label>
-                        <p class="mb-2 text-xs text-gray-500">Kapan anda mulai melanjutkan studi?</p><input type="date" wire:model.defer="d6MulaiStudi"
+                        <p class="mb-2 text-xs text-gray-500">Kapan anda mulai melanjutkan studi?</p><input
+                            type="date" wire:model.defer="d6MulaiStudi"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('d6MulaiStudi')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -1116,7 +1202,8 @@ new class extends Component {
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">D7. Alasan Lainnya</label>
-                        <p class="mb-2 text-xs text-gray-500">Jika alasan lainnya, tuliskan secara singkat.</p><input type="text" wire:model.defer="d7AlasanLainnya"
+                        <p class="mb-2 text-xs text-gray-500">Jika alasan lainnya, tuliskan secara singkat.</p><input
+                            type="text" wire:model.defer="d7AlasanLainnya"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('d7AlasanLainnya')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -1167,7 +1254,8 @@ new class extends Component {
                     </div>
                     <div class="md:col-span-2">
                         <label class="mb-1 block text-sm font-medium text-gray-700">E2. Aktivitas Mencari Kerja</label>
-                        <p class="mb-2 text-xs text-gray-500">Aktivitas apa yang anda lakukan untuk mencari kerja/usaha?</p>
+                        <p class="mb-2 text-xs text-gray-500">Aktivitas apa yang anda lakukan untuk mencari
+                            kerja/usaha?</p>
                         <div
                             class="max-h-52 space-y-2 overflow-y-auto rounded-lg border border-gray-200 bg-gray-50 p-3 md:max-h-none md:overflow-visible">
                             <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -1191,7 +1279,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">E3. Lama Mencari Kerja
                             (bulan)</label>
-                        <p class="mb-2 text-xs text-gray-500">Sudah berapa lama anda mencari pekerjaan (dalam bulan)?</p><input type="number" wire:model.defer="e3LamaCariBulan"
+                        <p class="mb-2 text-xs text-gray-500">Sudah berapa lama anda mencari pekerjaan (dalam bulan)?
+                        </p><input type="number" wire:model.defer="e3LamaCariBulan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('e3LamaCariBulan')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -1236,7 +1325,8 @@ new class extends Component {
                 </h2>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F1. Lokasi Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Di mana lokasi usaha anda dijalankan?</p><select wire:model.defer="f1LokasiUsaha"
+                        <p class="mb-2 text-xs text-gray-500">Di mana lokasi usaha anda dijalankan?</p><select
+                            wire:model.defer="f1LokasiUsaha"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="dalam_negeri">Dalam negeri</option>
@@ -1247,7 +1337,8 @@ new class extends Component {
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F2. Bentuk Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa bentuk badan usaha anda?</p><select wire:model.defer="f2BentukUsaha"
+                        <p class="mb-2 text-xs text-gray-500">Apa bentuk badan usaha anda?</p><select
+                            wire:model.defer="f2BentukUsaha"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="perorangan">Usaha perorangan</option>
@@ -1263,21 +1354,24 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F2. Bentuk Usaha
                             Lainnya</label>
-                        <p class="mb-2 text-xs text-gray-500">Jika bentuk usaha lainnya, tuliskan secara singkat.</p><input type="text" wire:model.defer="f2BentukUsahaLainnya"
+                        <p class="mb-2 text-xs text-gray-500">Jika bentuk usaha lainnya, tuliskan secara singkat.</p>
+                        <input type="text" wire:model.defer="f2BentukUsahaLainnya"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('f2BentukUsahaLainnya')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F3. Bidang Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Apa bidang usaha utama anda?</p><input type="text" wire:model.defer="f3BidangUsaha"
+                        <p class="mb-2 text-xs text-gray-500">Apa bidang usaha utama anda?</p><input type="text"
+                            wire:model.defer="f3BidangUsaha"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('f3BidangUsaha')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F4. Produk Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Produk usaha anda berupa barang, jasa, atau keduanya?</p><select wire:model.defer="f4ProdukUsaha"
+                        <p class="mb-2 text-xs text-gray-500">Produk usaha anda berupa barang, jasa, atau keduanya?</p>
+                        <select wire:model.defer="f4ProdukUsaha"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="barang">Barang</option>
@@ -1290,7 +1384,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F5. Kepemilikan
                             Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Status kepemilikan usaha anda bagaimana?</p><select wire:model.defer="f5Kepemilikan"
+                        <p class="mb-2 text-xs text-gray-500">Status kepemilikan usaha anda bagaimana?</p><select
+                            wire:model.defer="f5Kepemilikan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="milik_sendiri">Milik sendiri</option>
@@ -1302,14 +1397,16 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F6. Waktu Mulai
                             Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Kapan anda mulai menjalankan usaha ini?</p><input type="date" wire:model.defer="f6MulaiUsaha"
+                        <p class="mb-2 text-xs text-gray-500">Kapan anda mulai menjalankan usaha ini?</p><input
+                            type="date" wire:model.defer="f6MulaiUsaha"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                         @error('f6MulaiUsaha')
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F7. Omset Bulanan</label>
-                        <p class="mb-2 text-xs text-gray-500">Berapa kisaran omset bulanan usaha anda?</p><select wire:model.defer="f7OmsetBulanan"
+                        <p class="mb-2 text-xs text-gray-500">Berapa kisaran omset bulanan usaha anda?</p><select
+                            wire:model.defer="f7OmsetBulanan"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="kurang_25_jt">Kurang dari 25jt</option>
@@ -1323,7 +1420,8 @@ new class extends Component {
                     </div>
                     <div><label class="mb-1 block text-sm font-medium text-gray-700">F8. Riwayat Pergantian
                             Usaha</label>
-                        <p class="mb-2 text-xs text-gray-500">Seberapa sering anda mengganti jenis/usaha sebelumnya?</p><select wire:model.defer="f8RiwayatGantiUsaha"
+                        <p class="mb-2 text-xs text-gray-500">Seberapa sering anda mengganti jenis/usaha sebelumnya?
+                        </p><select wire:model.defer="f8RiwayatGantiUsaha"
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih</option>
                             <option value="belum_pernah">Belum pernah</option>
@@ -1372,14 +1470,16 @@ new class extends Component {
                     @enderror
                 </div>
                 <div><label class="mb-1 block text-sm font-medium text-gray-700">G1. Alasan Lainnya</label>
-                    <p class="mb-2 text-xs text-gray-500">Jika alasan lainnya, tuliskan secara singkat.</p><input type="text" wire:model.defer="g1AlasanLainnya"
+                    <p class="mb-2 text-xs text-gray-500">Jika alasan lainnya, tuliskan secara singkat.</p><input
+                        type="text" wire:model.defer="g1AlasanLainnya"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                     @error('g1AlasanLainnya')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
                 <div><label class="mb-1 block text-sm font-medium text-gray-700">G2. Durasi PKL</label>
-                    <p class="mb-2 text-xs text-gray-500">Berapa lama durasi PKL yang anda jalani saat sekolah?</p><select wire:model.defer="g2DurasiPkl"
+                    <p class="mb-2 text-xs text-gray-500">Berapa lama durasi PKL yang anda jalani saat sekolah?</p>
+                    <select wire:model.defer="g2DurasiPkl"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih</option>
                         <option value="kurang_6_bulan">Kurang dari 6 bulan</option>
@@ -1391,7 +1491,8 @@ new class extends Component {
                     @enderror
                 </div>
                 <div><label class="mb-1 block text-sm font-medium text-gray-700">G3. Kualitas PKL</label>
-                    <p class="mb-2 text-xs text-gray-500">Bagaimana penilaian anda terhadap kualitas pelaksanaan PKL?</p><select wire:model.defer="g3KualitasPkl"
+                    <p class="mb-2 text-xs text-gray-500">Bagaimana penilaian anda terhadap kualitas pelaksanaan PKL?
+                    </p><select wire:model.defer="g3KualitasPkl"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih</option>
                         <option value="sangat_tidak_baik">Sangat tidak baik</option>
@@ -1404,7 +1505,8 @@ new class extends Component {
                     @enderror
                 </div>
                 <div><label class="mb-1 block text-sm font-medium text-gray-700">G4. Kesesuaian PKL</label>
-                    <p class="mb-2 text-xs text-gray-500">Seberapa sesuai materi PKL dengan kompetensi keahlian anda?</p><select wire:model.defer="g4KesesuaianPkl"
+                    <p class="mb-2 text-xs text-gray-500">Seberapa sesuai materi PKL dengan kompetensi keahlian anda?
+                    </p><select wire:model.defer="g4KesesuaianPkl"
                         class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih</option>
                         <option value="sangat_tidak_baik">Sangat tidak baik</option>
