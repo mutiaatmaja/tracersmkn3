@@ -161,7 +161,7 @@ new class extends Component {
                 </div>
             </a>
 
-            <a href="{{ route('settings.references.provinces') }}" wire:navigate
+            {{-- <a href="{{ route('settings.references.provinces') }}" wire:navigate
                 class="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition group">
                 <div class="text-3xl">🗺️</div>
                 <div>
@@ -186,7 +186,7 @@ new class extends Component {
                     <h3 class="font-semibold text-purple-900 group-hover:text-purple-700">Perguruan Tinggi</h3>
                     <p class="text-sm text-purple-700">Kelola data universitas</p>
                 </div>
-            </a>
+            </a> --}}
         </div>
     </div>
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TracerSubmissionsExport;
 use App\Models\Alumni;
 use App\Models\TracerSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelPdf\Facades\Pdf;
 
 class LaporanController extends Controller
@@ -148,6 +150,18 @@ class LaporanController extends Controller
             ->format('a4')
             ->name('laporan-statistik-tracer-study.pdf')
             ->download();
+    }
+
+    public function tracerExcel(Request $request)
+    {
+        $periodeFilter = $request->string('periode_tahun')->toString();
+        $periode = $periodeFilter !== '' ? (int) $periodeFilter : null;
+        $fileSuffix = $periode ? "_{$periode}" : '_semua_periode';
+
+        return Excel::download(
+            new TracerSubmissionsExport($periode),
+            "laporan-hasil-tracer{$fileSuffix}.xlsx",
+        );
     }
 
     private function tracerSingleChoiceDefinitions(): array

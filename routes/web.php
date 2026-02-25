@@ -163,6 +163,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::livewire('/admin/laporan', 'pages.laporan')->name('laporan');
     Route::get('/admin/laporan/alumni/pdf', [LaporanController::class, 'alumniPdf'])->name('laporan.alumni.pdf');
     Route::get('/admin/laporan/tracer/pdf', [LaporanController::class, 'tracerPdf'])->name('laporan.tracer.pdf');
+    Route::get('/admin/laporan/tracer/excel', [LaporanController::class, 'tracerExcel'])->name('laporan.tracer.excel');
 
     // Lowongan
     Route::livewire('/admin/lowongan', 'pages.lowongan')->name('lowongan');
