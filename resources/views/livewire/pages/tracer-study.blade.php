@@ -284,7 +284,7 @@ new class extends Component {
             'c11FrekuensiGantiKerja' => [Rule::requiredIf($requireSectionC), 'nullable', 'string', 'max:50'],
             'c12AlasanGantiKerja' => [Rule::requiredIf($requireAlasanGantiKerja), 'nullable', 'string', 'max:255'],
             'c12AlasanLainnya' => [Rule::requiredIf($requireSectionC && $this->c12AlasanGantiKerja === 'lainnya'), 'nullable', 'string', 'max:255'],
-            'c13CaraDapatKerja' => [Rule::requiredIf($requireSectionC), 'nullable', 'array', 'min:1'],
+            'c13CaraDapatKerja' => [Rule::requiredIf($requireSectionC), 'nullable', 'array'],
             'c13CaraLainnya' => [Rule::requiredIf($requireC13Lainnya), 'nullable', 'string', 'max:255'],
             'c14KesesuaianPekerjaan' => [Rule::requiredIf($requireSectionC), 'nullable', 'string', 'max:50'],
             'd1LokasiStudi' => [Rule::requiredIf($requireSectionD), 'nullable', 'string', 'max:50'],
@@ -293,12 +293,12 @@ new class extends Component {
             'd4ProgramStudi' => [Rule::requiredIf($requireSectionD && $this->d2Jenjang === 's1' && filled($this->d3NamaPt)), 'nullable', 'string', 'max:255'],
             'd5KesesuaianStudi' => [Rule::requiredIf($requireSectionD), 'nullable', 'string', 'max:80'],
             'd6MulaiStudi' => [Rule::requiredIf($requireSectionD), 'nullable', 'date'],
-            'd7AlasanLanjut' => [Rule::requiredIf($requireSectionD), 'nullable', 'array', 'min:1'],
+            'd7AlasanLanjut' => [Rule::requiredIf($requireSectionD), 'nullable', 'array'],
             'd7AlasanLainnya' => [Rule::requiredIf($requireD7Lainnya), 'nullable', 'string', 'max:255'],
-            'e1AktivitasMingguan' => [Rule::requiredIf($requireSectionE), 'nullable', 'array', 'min:1', $this->exclusiveSelectionRule('tidak_termasuk', 'Jika memilih "Tidak termasuk semua pilihan di atas", jangan pilih aktivitas lainnya.')],
-            'e2AktivitasCariKerja' => [Rule::requiredIf($requireSectionE), 'nullable', 'array', 'min:1', $this->exclusiveSelectionRule('tidak_melakukan', 'Jika memilih "Tidak melakukan semua kegiatan di atas", jangan pilih aktivitas lainnya.')],
+            'e1AktivitasMingguan' => [Rule::requiredIf($requireSectionE), 'nullable', 'array', $this->exclusiveSelectionRule('tidak_termasuk', 'Jika memilih "Tidak termasuk semua pilihan di atas", jangan pilih aktivitas lainnya.')],
+            'e2AktivitasCariKerja' => [Rule::requiredIf($requireSectionE), 'nullable', 'array', $this->exclusiveSelectionRule('tidak_melakukan', 'Jika memilih "Tidak melakukan semua kegiatan di atas", jangan pilih aktivitas lainnya.')],
             'e3LamaCariBulan' => [Rule::requiredIf($requireSectionE), 'nullable', 'integer', 'min:0', 'max:240'],
-            'e4AlasanMencari' => [Rule::requiredIf($requireSectionE), 'nullable', 'array', 'min:1'],
+            'e4AlasanMencari' => [Rule::requiredIf($requireSectionE), 'nullable', 'array'],
             'f1LokasiUsaha' => [Rule::requiredIf($requireSectionF), 'nullable', 'string', 'max:50'],
             'f2BentukUsaha' => [Rule::requiredIf($requireSectionF), 'nullable', 'string', 'max:50'],
             'f2BentukUsahaLainnya' => [Rule::requiredIf($requireSectionF && $this->f2BentukUsaha === 'lainnya'), 'nullable', 'string', 'max:255'],
@@ -308,7 +308,7 @@ new class extends Component {
             'f6MulaiUsaha' => [Rule::requiredIf($requireSectionF), 'nullable', 'date'],
             'f7OmsetBulanan' => [Rule::requiredIf($requireSectionF), 'nullable', 'string', 'max:50'],
             'f8RiwayatGantiUsaha' => [Rule::requiredIf($requireSectionF), 'nullable', 'string', 'max:50'],
-            'g1AlasanPilihSmk' => [$required, 'array', Rule::requiredIf($isSubmit), 'min:1'],
+            'g1AlasanPilihSmk' => [$required, 'array', Rule::requiredIf($isSubmit)],
             'g1AlasanLainnya' => [Rule::requiredIf($requireG1Lainnya), 'nullable', 'string', 'max:255'],
             'g2DurasiPkl' => [$required, 'string', 'max:50'],
             'g3KualitasPkl' => [$required, 'string', 'max:50'],
@@ -479,6 +479,8 @@ new class extends Component {
             ],
             $this->payload('submitted'),
         );
+
+        Auth::user()->alumni->markTracerFilled();
 
         $this->status = 'submitted';
         $this->submittedAt = now()->format('Y-m-d H:i:s');

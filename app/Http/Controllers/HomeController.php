@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumni;
 use App\Models\TracerSubmission;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,9 @@ class HomeController extends Controller
      */
     public function index(): Renderable
     {
+        $currentUser = auth()->user();
+        $isAlumniUser = $currentUser?->hasRole('alumni') && $currentUser->alumni()->exists();
+
         $totalAlumni = Alumni::query()->count();
 
         $alumniPerTahun = Alumni::query()
@@ -109,7 +113,37 @@ class HomeController extends Controller
             ->orderByDesc('total')
             ->get();
 
+        $alumniTracerHistory = collect();
+        $alumniTracerTahunIniStatus = 'belum_isi';
+        $alumniTracerTahunIni = null;
+        $alumniBisaIsiLagiPada = null;
+        $alumniCanFillTracer = false;
+
+        if ($isAlumniUser) {
+            $alumni = $currentUser->alumni;
+
+            /** @var Collection<int, TracerSubmission> $alumniTracerHistory */
+            $alumniTracerHistory = TracerSubmission::query()
+                ->where('alumni_id', $alumni->id)
+                ->orderByDesc('periode_tahun')
+                ->orderByDesc('updated_at')
+                ->get();
+
+            $alumniTracerTahunIni = $alumniTracerHistory
+                ->firstWhere('periode_tahun', now()->year);
+
+            if ($alumniTracerTahunIni) {
+                $alumniTracerTahunIniStatus = $alumniTracerTahunIni->status === 'submitted'
+                    ? 'sudah_isi'
+                    : 'draft';
+            }
+
+            $alumniBisaIsiLagiPada = $alumni->next_tracer_eligible_date;
+            $alumniCanFillTracer = $alumni->canFillTracer();
+        }
+
         return view('home', [
+            'isAlumniUser' => $isAlumniUser,
             'totalAlumni' => $totalAlumni,
             'alumniPerTahun' => $alumniPerTahun,
             'latestPeriodeTracer' => $latestPeriodeTracer,
@@ -123,6 +157,11 @@ class HomeController extends Controller
             'averageGaji' => $averageGaji,
             'keselarasanPekerjaan' => $keselarasanPekerjaan,
             'keselarasanStudi' => $keselarasanStudi,
+            'alumniTracerHistory' => $alumniTracerHistory,
+            'alumniTracerTahunIniStatus' => $alumniTracerTahunIniStatus,
+            'alumniTracerTahunIni' => $alumniTracerTahunIni,
+            'alumniBisaIsiLagiPada' => $alumniBisaIsiLagiPada,
+            'alumniCanFillTracer' => $alumniCanFillTracer,
         ]);
     }
 }
