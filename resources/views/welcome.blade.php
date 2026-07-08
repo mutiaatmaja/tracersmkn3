@@ -78,10 +78,13 @@
 
     <!-- Hero Section -->
     <section class="relative overflow-hidden text-white">
-        {{-- Banner foto sekolah --}}
+        {{-- Banner foto sekolah: mobile pakai bannermobile.jpg, desktop pakai banner.png --}}
         <div class="absolute inset-0">
-            <img src="{{ asset('images/banner.png') }}" alt="SMKN 3 Pontianak"
-                class="w-full h-full object-cover object-center">
+            <picture>
+                <source media="(max-width: 767px)" srcset="{{ asset('images/bannermobile.jpg') }}">
+                <img src="{{ asset('images/banner.png') }}" alt="SMKN 3 Pontianak"
+                    class="w-full h-full object-cover object-center">
+            </picture>
             {{-- Overlay gradien biru agar teks terbaca --}}
             <div class="absolute inset-0 bg-linear-to-br from-blue-900/80 to-blue-700/70"></div>
         </div>
