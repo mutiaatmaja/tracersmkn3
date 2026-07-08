@@ -13,6 +13,8 @@
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo.jpeg') }}">
 </head>
 
 <body class="bg-linear-to-b from-blue-50 to-white font-sans antialiased">
@@ -48,9 +50,8 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-3">
-                    <div class="bg-blue-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">
-                        S3
-                    </div>
+                    <img src="{{ asset('images/logo.jpeg') }}" alt="Logo SMKN 3 Pontianak"
+                        class="w-10 h-10 rounded-lg object-cover">
                     <div>
                         <h1 class="text-lg font-bold text-gray-900">SMKN 3 Pontianak</h1>
                         <p class="text-xs text-gray-600">Tracer Study Alumni</p>
@@ -76,9 +77,13 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative overflow-hidden bg-linear-to-br from-blue-600 to-blue-800 text-white">
-        <div
-            class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20">
+    <section class="relative overflow-hidden text-white">
+        {{-- Banner foto sekolah --}}
+        <div class="absolute inset-0">
+            <img src="{{ asset('images/banner.png') }}" alt="SMKN 3 Pontianak"
+                class="w-full h-full object-cover object-center">
+            {{-- Overlay gradien biru agar teks terbaca --}}
+            <div class="absolute inset-0 bg-linear-to-br from-blue-900/80 to-blue-700/70"></div>
         </div>
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative">
             <div class="max-w-3xl mx-auto text-center">

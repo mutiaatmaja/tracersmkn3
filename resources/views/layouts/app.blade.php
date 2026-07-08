@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
 
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo.jpeg') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles()
 </head>
@@ -27,10 +29,8 @@
 
                     {{-- Logo --}}
                     <a href="{{ url('/') }}" class="flex items-center space-x-3 group">
-                        <div
-                            class="bg-blue-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition">
-                            S3
-                        </div>
+                        <img src="{{ asset('images/logo.jpeg') }}" alt="Logo SMKN 3 Pontianak"
+                            class="w-10 h-10 rounded-xl object-cover shadow-sm group-hover:scale-105 transition">
                         <div class="leading-tight">
                             <p class="text-lg font-bold text-gray-900">
                                 {{ \App\Models\Setting::get('school_name', 'SMKN 3 Pontianak') }}</p>
@@ -119,22 +119,22 @@
                                 📄 Laporan
                             </a>
                             <!--
-                                                        {{-- Lowongan --}}
-                                                        <a href="{{ route('lowongan') }}" wire:navigate
-                                                            class="{{ request()->is('admin/lowongan*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
+                                                                {{-- Lowongan --}}
+                                                                <a href="{{ route('lowongan') }}" wire:navigate
+                                                                    class="{{ request()->is('admin/lowongan*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 
-                                                            💼 Lowongan
-                                                        </a>
+                                                                    💼 Lowongan
+                                                                </a>
 
-                                                        {{-- Event --}}
-                                                        <a href="{{ route('event') }}" wire:navigate
-                                                            class="{{ request()->is('admin/event*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
+                                                                {{-- Event --}}
+                                                                <a href="{{ route('event') }}" wire:navigate
+                                                                    class="{{ request()->is('admin/event*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
                text-center px-3 py-2 rounded-lg font-medium transition-all duration-200">
 
-                                                            🎉 Event
-                                                        </a>
-                                                    -->
+                                                                    🎉 Event
+                                                                </a>
+                                                            -->
                             {{-- Pengguna --}}
                             <a href="{{ route('users') }}" wire:navigate
                                 class="{{ request()->is('admin/pengguna*') ? 'bg-blue-600 text-white shadow-sm' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}
