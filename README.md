@@ -1,11 +1,184 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tracer Study Alumni — SMKN 3 Pontianak
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem informasi pelacakan alumni (tracer study) berbasis web untuk SMKN 3 Pontianak. Dibangun dengan **Laravel 12**, **Livewire 4**, dan **Tailwind CSS v4**.
+
+---
+
+## Fitur Aplikasi
+
+### 👤 Alumni
+- **Klaim Akun** — alumni mendaftarkan diri dan menghubungkan ke data siswa yang sudah diinput admin.
+- **Formulir Tracer Study** — pengisian kuesioner lengkap A–G secara bertahap:
+  - A: Data domisili & kontak
+  - B: Status kegiatan (bekerja / kuliah / belum bekerja)
+  - C: Detail pekerjaan
+  - D: Detail studi lanjut
+  - E: Aktivitas bagi yang belum bekerja
+  - F: Detail usaha / wirausaha
+  - G: Penilaian SMK & PKL
+- **Simpan Draft** — progress isian tersimpan dan bisa dilanjutkan kapan saja.
+- **Dashboard Alumni** — status tracer, riwayat pengisian, dan jadwal pengisian berikutnya.
+
+### 🛠️ Admin
+- **Manajemen Data Alumni** — tambah, edit, impor via Excel, dan ekspor data alumni.
+- **Manajemen Pengguna** — kelola akun pengguna dengan role-based access (admin, alumni, dll).
+- **Laporan Alumni** — statistik jumlah alumni per tahun lulus, jenis kelamin, usia, dan status klaim akun. Ekspor ke PDF.
+- **Laporan Tracer Study** — statistik per periode, status kegiatan, jenis instansi, keselarasan bidang pekerjaan & studi, rata-rata gaji, kampus favorit. Ekspor ke PDF & Excel.
+- **Pengaturan Aplikasi** — nama sekolah, alamat, dan konfigurasi umum.
+- **Data Referensi** — master data kompetensi/jurusan, provinsi, kota, universitas, dan negara.
+
+### 🌐 Halaman Publik
+- Landing page dengan statistik ringkas alumni (total, bekerja, wirausaha, studi lanjut).
+- Statistik dinamis: jenis instansi, keselarasan pekerjaan & studi, kampus favorit.
+- Gambar banner responsif (tampilan berbeda untuk desktop & mobile).
+
+---
+
+## Persyaratan Sistem
+
+| Komponen | Versi Minimum |
+|---|---|
+| **PHP** | 8.2 |
+| **Composer** | 2.x |
+| **Node.js** | 18.x |
+| **npm** | 9.x |
+| **Database** | SQLite 3 / MySQL 8 / MariaDB 10.4 |
+
+### PHP Extensions yang Dibutuhkan
+- `pdo`, `pdo_sqlite` atau `pdo_mysql`
+- `mbstring`
+- `xml`
+- `zip` (untuk ekspor Excel)
+- `gd` atau `imagick` (untuk PDF)
+
+---
+
+## Instalasi
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/your-username/tracersmkn3.git
+cd tracersmkn3
+```
+
+### 2. Instal Dependensi PHP & Node
+```bash
+composer install
+npm install
+```
+
+### 3. Konfigurasi Environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Edit `.env` sesuai kebutuhan:
+```env
+APP_NAME="Tracer Study SMKN 3 Pontianak"
+APP_URL=http://localhost:8000
+
+# Gunakan SQLite (default, tidak perlu konfigurasi tambahan):
+DB_CONNECTION=sqlite
+
+# Atau MySQL:
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=tracersmkn3
+# DB_USERNAME=root
+# DB_PASSWORD=
+```
+
+### 4. Migrasi & Seeding Database
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+Seeder akan membuat:
+- Data kompetensi/jurusan
+- Data universitas & program studi
+- Data 34 provinsi dan 514 kota/kabupaten Indonesia (dari CSV)
+- Data negara
+- Pengaturan awal sekolah
+- Role dan akun pengguna awal (password default: `password`)
+
+### 5. Build Assets Frontend
+```bash
+npm run build
+```
+
+### 6. Jalankan Aplikasi
+```bash
+php artisan serve
+```
+
+Aplikasi dapat diakses di `http://localhost:8000`.
+
+---
+
+## Menjalankan untuk Development
+
+Gunakan satu perintah untuk menjalankan server, queue, log, dan Vite secara bersamaan:
+
+```bash
+composer run dev
+```
+
+Atau gunakan `setup` untuk instalasi lengkap dari awal:
+```bash
+composer run setup
+```
+
+---
+
+## Akun Default
+
+Setelah seeding, akun berikut tersedia (password: `password`):
+
+| Role | Email |
+|---|---|
+| Admin | `admin1@smkn3ptk.test` |
+| Tata Usaha | `tu1@smkn3ptk.test` |
+| Alumni | `alumni1@smkn3ptk.test` |
+
+---
+
+## Stack Teknologi
+
+| Kategori | Teknologi |
+|---|---|
+| Framework | Laravel 12 |
+| Frontend Reaktif | Livewire 4 |
+| CSS | Tailwind CSS v4 |
+| Autentikasi | Laravel UI + Laratrust (RBAC) |
+| PDF | Spatie Laravel PDF (DOMPDF) |
+| Excel | Maatwebsite Laravel Excel v3 |
+| Database | SQLite / MySQL |
+| Build Tool | Vite |
+
+---
+
+## Struktur Role
+
+| Role | Akses |
+|---|---|
+| `admin` | Seluruh fitur admin |
+| `tu` | Tata Usaha |
+| `guru` | Guru |
+| `waka` | Wakil Kepala Sekolah |
+| `kepalasekolah` | Kepala Sekolah |
+| `alumni` | Dashboard alumni & formulir tracer |
+| `siswa` | Akun siswa |
+
+---
+
+## Lisensi
+
+Aplikasi ini dikembangkan untuk keperluan internal SMKN 3 Pontianak.
+
+---
 
 ## About Laravel
 
