@@ -16,6 +16,11 @@ class AlumnisImport implements ToCollection, WithHeadingRow
 
     public int $skippedCount = 0;
 
+    /**
+     * @var array<int, array{row:int, reason:string}>
+     */
+    public array $skippedDetails = [];
+
     public function collection(Collection $rows): void
     {
         $competenciesByCode = Competency::query()
@@ -24,7 +29,8 @@ class AlumnisImport implements ToCollection, WithHeadingRow
                 return [strtoupper(trim($competency->kode)) => $competency->id];
             });
 
-        foreach ($rows as $row) {
+        foreach ($rows as $index => $row) {
+            $rowNumber = $index + 2;
             $namaLengkap = trim((string) ($row['nama_lengkap'] ?? $row['nama'] ?? ''));
             $nisn = trim((string) ($row['nisn'] ?? ''));
             $nik = trim((string) ($row['nik'] ?? ''));
@@ -32,14 +38,32 @@ class AlumnisImport implements ToCollection, WithHeadingRow
             $tahunLulus = (int) ($row['tahun_lulus'] ?? 0);
             $jenisKelamin = strtolower(trim((string) ($row['jenis_kelamin'] ?? '')));
 
-            if ($namaLengkap === '' || ($nisn === '' && $nik === '') || $kompetensiKode === '' || $tahunLulus < 1900) {
-                $this->skippedCount++;
+            if ($namaLengkap === '') {
+                $this->skipRow($rowNumber, 'nama lengkap kosong.');
+
+                continue;
+            }
+
+            if ($nisn === '' && $nik === '') {
+                $this->skipRow($rowNumber, 'NISN dan NIK kosong. Salah satu wajib diisi.');
+
+                continue;
+            }
+
+            if ($kompetensiKode === '') {
+                $this->skipRow($rowNumber, 'kode kompetensi kosong.');
+
+                continue;
+            }
+
+            if ($tahunLulus < 1900 || $tahunLulus > now()->year + 1) {
+                $this->skipRow($rowNumber, 'tahun lulus tidak valid.');
 
                 continue;
             }
 
             if (! in_array($jenisKelamin, ['laki-laki', 'perempuan'], true)) {
-                $this->skippedCount++;
+                $this->skipRow($rowNumber, 'jenis kelamin harus laki-laki atau perempuan.');
 
                 continue;
             }
@@ -47,7 +71,7 @@ class AlumnisImport implements ToCollection, WithHeadingRow
             $competencyId = $competenciesByCode->get($kompetensiKode);
 
             if (! $competencyId) {
-                $this->skippedCount++;
+                $this->skipRow($rowNumber, "kode kompetensi '{$kompetensiKode}' tidak ditemukan.");
 
                 continue;
             }
@@ -94,5 +118,15 @@ class AlumnisImport implements ToCollection, WithHeadingRow
         $stringValue = trim((string) $value);
 
         return $stringValue !== '' ? $stringValue : null;
+    }
+
+    private function skipRow(int $rowNumber, string $reason): void
+    {
+        $this->skippedCount++;
+
+        $this->skippedDetails[] = [
+            'row' => $rowNumber,
+            'reason' => $reason,
+        ];
     }
 }

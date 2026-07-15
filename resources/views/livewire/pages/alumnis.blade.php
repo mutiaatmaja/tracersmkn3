@@ -20,6 +20,8 @@ new class extends Component {
 
     public bool $showModal = false;
 
+    public bool $showImportSummaryModal = false;
+
     public ?Alumni $editingAlumni = null;
 
     public $importFile;
@@ -43,6 +45,21 @@ new class extends Component {
     public string $nomorTelepon = '';
 
     public string $alamat = '';
+
+    /**
+     * @var array{created:int,updated:int,skipped:int,processed:int}
+     */
+    public array $importSummary = [
+        'created' => 0,
+        'updated' => 0,
+        'skipped' => 0,
+        'processed' => 0,
+    ];
+
+    /**
+     * @var array<int, array{row:int, reason:string}>
+     */
+    public array $importSkippedDetails = [];
 
     public function mount(): void
     {
@@ -209,13 +226,31 @@ new class extends Component {
         $this->reset('importFile');
         unset($this->alumnis, $this->totalAlumnis);
 
+        $this->importSummary = [
+            'created' => $import->createdCount,
+            'updated' => $import->updatedCount,
+            'skipped' => $import->skippedCount,
+            'processed' => $import->createdCount + $import->updatedCount + $import->skippedCount,
+        ];
+        $this->importSkippedDetails = $import->skippedDetails;
+        $this->showImportSummaryModal = true;
+
         $this->dispatch('toast', message: "Import selesai. Baru: {$import->createdCount}, Diperbarui: {$import->updatedCount}, Dilewati: {$import->skippedCount}", type: 'success');
+
+        if ($import->skippedCount > 0) {
+            $this->dispatch('toast', message: 'Sebagian data dilewati. Lihat detail pada modal rekap import.', type: 'info');
+        }
     }
 
     public function closeModal(): void
     {
         $this->showModal = false;
         $this->resetValidation();
+    }
+
+    public function closeImportSummaryModal(): void
+    {
+        $this->showImportSummaryModal = false;
     }
 };
 ?>
@@ -247,10 +282,79 @@ new class extends Component {
             <button wire:click="importAlumnis" wire:loading.attr="disabled" wire:target="importAlumnis,importFile"
                 class="order-2 inline-flex min-w-36 items-center justify-center rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-60 sm:order-3">
                 <span wire:loading.remove wire:target="importAlumnis">Import</span>
-                <span wire:loading wire:target="importAlumnis">...</span>
+                <span wire:loading wire:target="importAlumnis">Mengimpor...</span>
             </button>
         </div>
     </div>
+
+    @if ($showImportSummaryModal)
+        <div class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black bg-opacity-30 p-4 backdrop-blur-sm md:items-center"
+            wire:click="closeImportSummaryModal">
+            <div class="my-4 w-full max-w-3xl rounded-lg bg-white p-6 shadow-2xl md:my-8 md:max-h-[90vh] md:overflow-y-auto"
+                wire:click.stop>
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-gray-900">Rekap Import Alumni</h2>
+                    <button wire:click="closeImportSummaryModal" class="text-gray-400 hover:text-gray-600">✕</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+                    <div class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+                        <p class="text-xs text-gray-600">Diproses</p>
+                        <p class="text-lg font-semibold text-gray-900">{{ $importSummary['processed'] }}</p>
+                    </div>
+                    <div class="rounded-lg border border-green-200 bg-green-50 px-3 py-2">
+                        <p class="text-xs text-green-700">Baru</p>
+                        <p class="text-lg font-semibold text-green-800">{{ $importSummary['created'] }}</p>
+                    </div>
+                    <div class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2">
+                        <p class="text-xs text-blue-700">Diperbarui</p>
+                        <p class="text-lg font-semibold text-blue-800">{{ $importSummary['updated'] }}</p>
+                    </div>
+                    <div class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
+                        <p class="text-xs text-amber-700">Dilewati</p>
+                        <p class="text-lg font-semibold text-amber-800">{{ $importSummary['skipped'] }}</p>
+                    </div>
+                </div>
+
+                @if (count($importSkippedDetails) > 0)
+                    <div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                        <h3 class="text-sm font-semibold text-amber-800">Detail Data Dilewati</h3>
+                        <p class="mt-1 text-xs text-amber-700">Periksa baris berikut pada file import untuk memperbaiki data.</p>
+
+                        <div class="mt-3 max-h-72 overflow-auto rounded-lg border border-amber-200 bg-white">
+                            <table class="w-full text-sm">
+                                <thead class="sticky top-0 bg-amber-100 text-amber-900">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left font-semibold">Baris</th>
+                                        <th class="px-3 py-2 text-left font-semibold">Alasan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-amber-100">
+                                    @foreach ($importSkippedDetails as $detail)
+                                        <tr>
+                                            <td class="px-3 py-2 align-top font-medium text-amber-900">{{ $detail['row'] }}</td>
+                                            <td class="px-3 py-2 text-amber-800">{{ $detail['reason'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @else
+                    <div class="mt-5 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+                        Semua data valid. Tidak ada baris yang dilewati.
+                    </div>
+                @endif
+
+                <div class="mt-5 flex items-center justify-end">
+                    <button wire:click="closeImportSummaryModal"
+                        class="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
         <table class="w-full">
