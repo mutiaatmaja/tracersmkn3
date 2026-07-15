@@ -76,17 +76,11 @@ class AlumnisImport implements ToCollection, WithHeadingRow
                 continue;
             }
 
-            $alumniQuery = Alumni::query();
+            $existingAlumni = $this->resolveExistingAlumni($nisn, $nik, $rowNumber);
 
-            if ($nisn !== '' && $nik !== '') {
-                $alumniQuery->where('nisn', $nisn)->orWhere('nik', $nik);
-            } elseif ($nisn !== '') {
-                $alumniQuery->where('nisn', $nisn);
-            } else {
-                $alumniQuery->where('nik', $nik);
+            if ($existingAlumni === false) {
+                continue;
             }
-
-            $existingAlumni = $alumniQuery->first();
 
             $payload = [
                 'nama_lengkap' => $namaLengkap,
@@ -118,6 +112,40 @@ class AlumnisImport implements ToCollection, WithHeadingRow
         $stringValue = trim((string) $value);
 
         return $stringValue !== '' ? $stringValue : null;
+    }
+
+    private function resolveExistingAlumni(string $nisn, string $nik, int $rowNumber): Alumni|false|null
+    {
+        if ($nisn !== '' && $nik !== '') {
+            $byNisn = Alumni::query()->where('nisn', $nisn)->first();
+            $byNik = Alumni::query()->where('nik', $nik)->first();
+
+            if ($byNisn && $byNik && $byNisn->id !== $byNik->id) {
+                $this->skipRow($rowNumber, 'NISN dan NIK mengarah ke dua data alumni berbeda.');
+
+                return false;
+            }
+
+            if ($byNisn) {
+                return $byNisn;
+            }
+
+            if ($byNik) {
+                return $byNik;
+            }
+
+            return null;
+        }
+
+        if ($nisn !== '') {
+            return Alumni::query()->where('nisn', $nisn)->first();
+        }
+
+        if ($nik !== '') {
+            return Alumni::query()->where('nik', $nik)->first();
+        }
+
+        return null;
     }
 
     private function skipRow(int $rowNumber, string $reason): void
